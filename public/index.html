@@ -1,0 +1,36 @@
+<!doctype html>
+<html ng-app="list">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      
+    <title>Consolidated List App</title>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/uber-list.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular-touch.min.js"></script>
+    <script src="js/uber-list.js"></script>
+  </head>
+  <body ng-controller="ListCtrl">
+    <div class=container-fluid">
+      <div class="row">
+        <div class="col-md-12"> 
+          <h3>Consolidated list is coming soon</h3>
+        </div>
+      </div>
+      <div class="row" ng-repeat="list in lists">
+        <div class="col-md-12">
+          <h4 ng-click="toggle(list.name)">{{list.name}}</h4>
+          <div ng-show="isVisible(list.name)">
+            <ul class="list-group">
+              <li class="list-group-item" ng-repeat="item in list.items">{{item}}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
