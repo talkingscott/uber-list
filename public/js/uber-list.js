@@ -1,4 +1,4 @@
-var app = angular.module('list', ['ngTouch']);
+var app = angular.module('list', ['ngAnimate', 'ngTouch']);
 
 var ctrl = app.controller('ListCtrl', ['$scope', '$log', function ($scope, $log) {
   $scope.lists = [
