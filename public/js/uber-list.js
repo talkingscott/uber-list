@@ -7,15 +7,16 @@ var ctrl = app.controller('ListCtrl', ['$scope', '$log', function ($scope, $log)
     {name: 'Home Depot', items: ['BR40 bulbs', 'gas additive']}
   ];
 
-  $scope.visible = {};
-  for (var name in $scope.lists) {
-    $scope.visible[name] = false;
-  }
+  $scope.newItem = "";
   
+  $scope.visible = {};
   $scope.insertable = {};
-  for (var name in $scope.lists) {
-    $scope.insertable[name] = false;
-  }
+  $scope.list_map = {};
+  $scope.lists.forEach(function (list) {
+    $scope.visible[list.name] = false;
+    $scope.insertable[list.name] = false;
+    $scope.list_map[list.name] = list;
+  });
   
   $scope.isVisible = function (name) {
     return $scope.visible[name];
@@ -36,4 +37,11 @@ var ctrl = app.controller('ListCtrl', ['$scope', '$log', function ($scope, $log)
     }
     $scope.insertable[name] = insertable;
   };
+
+  $scope.addItem = function (list_name, item) {
+    var list = $scope.list_map[list_name];
+    list.items.push(item);
+    $log.info('item ' + item + ' newItem ' + $scope.newItem);
+    $scope.newItem = "";
+  }
 }]);
