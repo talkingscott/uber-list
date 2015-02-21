@@ -24,11 +24,18 @@
       </div>
       <div class="row" ng-repeat="list in lists">
         <div class="col-md-12">
-          <h4 ng-click="toggle(list.name)">{{list.name}}</h4>
+          <h4>{{list.name}}<span class="right-align"><span class="glyphicon glyphicon-plus" aria-hidden="true" ng-hide="isInsertable(list.name)" ng-click="toggleInsertable(list.name)"></span><span class="glyphicon glyphicon-minus" aria-hidden="true" ng-show="isInsertable(list.name)" ng-click="toggleInsertable(list.name)"></span><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" ng-hide="isVisible(list.name)" ng-click="toggle(list.name)"></span><span class="glyphicon glyphicon-chevron-up" aria-hidden="true" ng-show="isVisible(list.name)" ng-click="toggle(list.name)"></span></span></h4>
           <div class="list-item-set" ng-show="isVisible(list.name)">
             <ul class="list-unstyled">
               <li ng-repeat="item in list.items">{{item}}</li>
             </ul>
+            <form class="form-inline" ng-show="isInsertable(list.name)">
+              <div class="form-group">
+                <label class="sr-only" for="newItem">New Item</label>
+                <input type="text" class="form-control" id="newItem" placeholder="Enter item">
+              </div>
+              <button type="submit" class="btn btn-default">Add</button>
+            </form>
           </div>
         </div>
       </div>

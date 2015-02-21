@@ -1,7 +1,9 @@
 var express = require('express');
+var logger = require('morgan');
 var app = express();
 
 app.set('port', (process.env.PORT || 5000));
+app.use(logger('combined'));
 app.use(express.static(__dirname + '/public'));
 
 // express returns index.html automagically

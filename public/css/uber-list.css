@@ -1,5 +1,7 @@
 h4 { background-color: #c0d0f0; padding-top: +2px; padding-bottom: +2px; padding-left: +2px; padding-right: +2px; }
 
+div .right-align { float: right; }
+
 .list-item-set { opacity: 1; line-height: inherit; }
 .list-item-set.ng-hide { opacity: 0; line-height: 0; }
 .list-item-set.ng-hide-add.ng-hide-add-active,
