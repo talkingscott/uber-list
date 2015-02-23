@@ -1,6 +1,6 @@
 var app = angular.module('list', ['ngAnimate', 'ngTouch']);
 
-var ctrl = app.controller('ListCtrl', ['$scope', '$log', function ($scope, $log) {
+var ctrl = app.controller('ListCtrl', ['$scope', '$log', '$http', function ($scope, $log, $http) {
   // read lists from local store
   if (window.localStorage) {
     var lists_json = window.localStorage.getItem('uber-list-lists');
@@ -8,7 +8,6 @@ var ctrl = app.controller('ListCtrl', ['$scope', '$log', function ($scope, $log)
       $scope.lists = angular.fromJson(lists_json);
     }
   }
-  // TODO: read lists from backing store N.B. to handle off-line, this must merge)
   if (! $scope.lists) {
     $scope.lists = [
       {name: 'Acme', items: ['bread', 'soda', 'fish', 'cheese']},
@@ -16,17 +15,31 @@ var ctrl = app.controller('ListCtrl', ['$scope', '$log', function ($scope, $log)
       {name: 'Home Depot', items: ['BR40 bulbs', 'gas additive']}
     ];
   }
+  
+  var initStuff = function () {
+    $scope.visible = {};
+    $scope.insertable = {};
+    $scope.list_map = {};
+    $scope.new_items = {};
+    $scope.lists.forEach(function (list) {
+      $scope.visible[list.name] = false;
+      $scope.insertable[list.name] = false;
+      $scope.list_map[list.name] = list;
+      $scope.new_items[list.name] = '';
+    });
+  };
 
-  $scope.visible = {};
-  $scope.insertable = {};
-  $scope.list_map = {};
-  $scope.new_items = {};
-  $scope.lists.forEach(function (list) {
-    $scope.visible[list.name] = false;
-    $scope.insertable[list.name] = false;
-    $scope.list_map[list.name] = list;
-    $scope.new_items[list.name] = '';
-  });
+  initStuff();
+  
+  // read lists from backing store (N.B. to handle off-line, this must merge)
+  $http.get('/api/lists').
+    success(function(data, status, headers, config) {
+      $scope.lists = data;
+      initStuff();
+    }).
+    error(function(data, status, headers, config) {
+      $log.error(status);
+    });
   
   $scope.isVisible = function (name) {
     return $scope.visible[name];
@@ -62,7 +75,14 @@ var ctrl = app.controller('ListCtrl', ['$scope', '$log', function ($scope, $log)
     if (window.localStorage) {
       window.localStorage.setItem('uber-list-lists', angular.toJson($scope.lists));
     }
-    // TODO: update lists in backing store (N.B. to handle off-line this must merge)
+    // update lists in backing store (N.B. to handle off-line this must merge)
+    $http.post('/api/lists', $scope.lists).
+      success(function(data, status, headers, config) {
+        $log.info('POST succeeded');
+      }).
+      error(function(data, status, headers, config) {
+        $log.error(status);
+      });
     $scope.new_items[list_name] = '';
   }
   
